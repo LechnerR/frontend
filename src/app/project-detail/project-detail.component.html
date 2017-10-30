@@ -1,4 +1,11 @@
 
-  <div *ngIf="project">
-    <mat-icon>face</mat-icon><span> {{project.title}}</span>
-  </div>
+<div *ngIf="project">
+   <h2>{{project.title}} details!</h2>
+   <div>
+     <label>id: </label>{{project.id}}
+   </div>
+   <div>
+     <label>title: </label>
+     <input [(ngModel)]="project.title" placeholder="title"/>
+   </div>
+ </div>

@@ -1,0 +1,8 @@
+<!--The content below is only a placeholder and can be replaced.-->
+
+<ul>
+  <li *ngFor="let project of projects"
+    (click)="onSelect(project)">{{project.title}}
+  </li>
+</ul>
+<project-detail [project]="selectedProject"></project-detail>

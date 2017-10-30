@@ -1,11 +1,10 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<mat-toolbar>
-  <span><i class="fa fa-home" aria-hidden="true"></i> Das beste Projekt Management Tool</span>
-</mat-toolbar>
-<ul>
-  <li *ngFor="let project of projects"
-    (click)="onSelect(project)">{{project.title}}
-  </li>
-</ul>
-<project-detail [project]="selectedProject"></project-detail>
-<task-detail></task-detail>
+<!-- <mat-toolbar>
+  <span><mat-icon>home</mat-icon> Das beste Projekt Management Tool</span>
+</mat-toolbar> -->
+
+<h1>{{title}}</h1>
+<nav>
+  <a routerLink="/dashboard">Dashboard</a>
+  <a routerLink="/projects">Projects</a>
+</nav>
+<router-outlet></router-outlet>
