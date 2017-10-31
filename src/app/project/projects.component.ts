@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Project } from './shared/project';
-import { ProjectService } from './project.service';
+import { Project } from '../shared/project';
+import { ProjectService } from '../project.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'projects',
   templateUrl: './projects.component.html',
-  styleUrls: ['./projects.component.scss'],
-  providers: [ProjectService]
+  styleUrls: ['./projects.component.scss']
+  // providers: [ProjectService]
 })
 
 export class ProjectsComponent implements OnInit {
@@ -14,7 +15,10 @@ export class ProjectsComponent implements OnInit {
   projects: Project[];
   selectedProject: Project;
 
-  constructor (private projectService: ProjectService) { }
+  constructor (
+    private router: Router,
+    private projectService: ProjectService
+  ) { }
 
   getProjects(): void {
     this.projectService.getProjects().then(projects => this.projects = projects);
@@ -26,5 +30,9 @@ export class ProjectsComponent implements OnInit {
 
   onSelect(project: Project): void {
     this.selectedProject = project;
+  }
+
+  gotoDetail(): void {
+    this.router.navigate(['/project', this.selectedProject.id]);
   }
 }

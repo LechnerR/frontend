@@ -1,8 +1,8 @@
 <h3>Top Projekte</h3>
 <div class="grid grid-pad">
-  <div *ngFor="let project of projects">
+  <a *ngFor="let project of projects" [routerLink]="['/project', project.id]" class="col-1-4">
     <div>
       <h4>{{project.title}}</h4>
     </div>
-  </div>
+  </a>
 </div>
