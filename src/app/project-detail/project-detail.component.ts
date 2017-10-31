@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 import 'rxjs/add/operator/switchMap';
@@ -12,7 +12,7 @@ import { Project } from '../shared/project';
   styleUrls: ['./project-detail.component.scss']
 })
 export class ProjectDetailComponent implements OnInit {
-    @Input() project: Project;
+    project: Project;
 
     constructor (
       private projectService: ProjectService,
@@ -30,4 +30,8 @@ export class ProjectDetailComponent implements OnInit {
       this.location.back();
     }
 
+    save(): void {
+      this.projectService.update(this.project)
+          .then(() => this.goBack());
+    }
 }

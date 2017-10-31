@@ -1,6 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
+// import { HttpClientModule } from '@angular/common/http';
+
+import { AppRoutingModule } from './app-routing.module';
+
+// Imports for loading & configuring the in-memory web api
+import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryDataService }  from './shared/in-memory-data.service';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -13,8 +21,7 @@ import { ProjectDetailComponent } from './project-detail/project-detail.componen
 import { TaskDetailComponent } from './task-detail/task-detail.component';
 import { ProjectsComponent } from './project/projects.component';
 import { ProjectService } from './project.service';
-
-import { AppRoutingModule } from './app-routing.module';
+import { ProjectSearchComponent } from './project-search/project-search.component';
 
 @NgModule({
     imports: [MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatDatepickerModule, MatNativeDateModule],
@@ -28,7 +35,8 @@ export class MyOwnCustomMaterialModule { }
     ProjectDetailComponent,
     TaskDetailComponent,
     ProjectsComponent,
-    DashboardComponent
+    DashboardComponent,
+    ProjectSearchComponent
   ],
   imports: [
     BrowserModule,
@@ -36,11 +44,12 @@ export class MyOwnCustomMaterialModule { }
     BrowserAnimationsModule,
     MyOwnCustomMaterialModule,
     FlexLayoutModule,
-    AppRoutingModule
+    HttpModule,
+    // HttpClientModule,
+    InMemoryWebApiModule.forRoot(InMemoryDataService),
+    AppRoutingModule,
   ],
-  providers: [
-    ProjectService
-  ],
+  providers: [ProjectService],
   bootstrap: [AppComponent]
 })
 

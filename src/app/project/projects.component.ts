@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
   selector: 'projects',
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss']
-  // providers: [ProjectService]
 })
 
 export class ProjectsComponent implements OnInit {
@@ -21,7 +20,28 @@ export class ProjectsComponent implements OnInit {
   ) { }
 
   getProjects(): void {
-    this.projectService.getProjects().then(projects => this.projects = projects);
+    this.projectService
+      .getProjects()
+      .then(projects => this.projects = projects);
+  }
+
+  add(title: string): void {
+    title = title.trim();
+    if (!title) { return; }
+    this.projectService.create(title)
+      .then(project => {
+        this.projects.push(project);
+        this.selectedProject = null;
+      });
+  }
+
+  delete(project: Project): void {
+    this.projectService
+      .delete(project.id)
+      .then(() => {
+        this.projects = this.projects.filter(p => p !== project);
+        if (this.selectedProject === project) { this.selectedProject = null; }
+      });
   }
 
   ngOnInit(): void {
@@ -35,4 +55,5 @@ export class ProjectsComponent implements OnInit {
   gotoDetail(): void {
     this.router.navigate(['/project', this.selectedProject.id]);
   }
+
 }
