@@ -16,4 +16,8 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.projectService.getProjects().then(projects => this.projects = projects);
   }
+
+  addProject(): void {
+    //open Dialog to input all things for a new project
+  }
 }

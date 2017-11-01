@@ -1,0 +1,31 @@
+#search #searchbar {
+  border-radius: 20px;
+  width: 95%;
+  margin: 30px 0px 30px 15px;
+  height: 27px;
+  text-align: center;
+  border: 1px solid grey;
+}
+
+#search label {
+  position: absolute;
+}
+
+label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 3px;
+    font-weight: bold;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+}
+
+.fa {
+  display: inline-block;
+  font-size: inherit;
+  margin-left: 25px;
+  margin-top: 6px;
+}
