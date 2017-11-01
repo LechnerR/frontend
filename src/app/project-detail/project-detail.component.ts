@@ -34,4 +34,28 @@ export class ProjectDetailComponent implements OnInit {
       this.projectService.update(this.project)
           .then(() => this.goBack());
     }
+
+    addTask(): void {
+
+    }
+
+    deleteTask(): void {
+
+    }
+
+    addUser(): void {
+
+    }
+
+    deleteUser(): void {
+
+    }
+
+    addAppointment(): void {
+
+    }
+
+    deleteAppointment(): void {
+      
+    }
 }

@@ -5,9 +5,12 @@
           <a  [routerLink]="['/project', project.id]" class="col-1-4">{{project.title}}</a>
       </mat-grid-tile>
   </mat-grid-list>
-  <div class="form-group col-xs-12">
+  <div class="form-group col-sm-8">
     <label for="newProject">neues Projekt</label>
     <i id="newProject" name="newProject" class="fa fa-plus-circle" (click)="addProject()"></i>
+  </div>
+  <div class="col-sm-4">
+
   </div>
 </div>
 <div class="col-sm-4">

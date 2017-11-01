@@ -8,6 +8,4 @@ export class Project {
   descr: string;
   notes: string;
   tasks: Task[];
-  user: User[];
-  milestones: Milestone[];
 }
