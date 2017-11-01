@@ -8,7 +8,8 @@ import { Project } from './shared/project';
 @Injectable()
 export class ProjectService {
 
-  private projectsUrl = 'api/projects'; // URL to web api
+  // private projectsUrl = 'api/projects'; // URL to web api
+  private projectsUrl = 'http://localhost:53627/api/Projects'; // URL to web api
   private headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(private http: Http) { }
@@ -29,7 +30,9 @@ export class ProjectService {
   }
 
   update(project: Project): Promise<Project> {
-    const url = `${this.projectsUrl}/${project.id}`;
+    // const url = `${this.projectsUrl}/${project.id}`;
+    const url = this.projectsUrl + '/' + project.id;
+    
     return this.http
               .put(url, JSON.stringify(project), {headers: this.headers})
               .toPromise()

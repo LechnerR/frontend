@@ -18,6 +18,6 @@ export class DashboardComponent implements OnInit {
   }
 
   addProject(): void {
-    //open Dialog to input all things for a new project
+    // open Dialog to input all things for a new project
   }
 }

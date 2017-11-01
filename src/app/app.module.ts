@@ -46,7 +46,7 @@ export class MyOwnCustomMaterialModule { }
     FlexLayoutModule,
     HttpModule,
     // HttpClientModule,
-    InMemoryWebApiModule.forRoot(InMemoryDataService),
+    // InMemoryWebApiModule.forRoot(InMemoryDataService),
     AppRoutingModule,
   ],
   providers: [ProjectService],
