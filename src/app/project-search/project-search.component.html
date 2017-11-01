@@ -5,6 +5,7 @@
     </label>
     <input id="searchbar" class="form-control input-lg" placeholder="Projektsuche" #searchBox (keyup)="search(searchBox.value)" />
   </div>
+
   <div>
     <div *ngFor="let project of projects | async"
       (click)="gotoDetail(project)" class="search-result">
