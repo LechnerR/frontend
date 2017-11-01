@@ -1,8 +1,9 @@
-<project-search class="col-sm-12"></project-search>
+
 <div class="col-sm-8">
+  <project-search></project-search>
   <mat-grid-list cols="3" rowHeight="2:1" gutterSize="8px">
-      <mat-grid-tile *ngFor="let project of projects">
-          <a  [routerLink]="['/project', project.id]" class="col-1-4">{{project.title}}</a>
+      <mat-grid-tile *ngFor="let project of projects" [routerLink]="['/project', project.id]">
+          {{project.title}}
       </mat-grid-tile>
   </mat-grid-list>
   <div class="form-group col-sm-8">
@@ -13,13 +14,15 @@
 
   </div>
 </div>
-<div class="col-sm-4">
-  <h4>Anstehende Aufgaben</h4>
-  <mat-list>
-    <mat-list-item *ngFor="let project of projects">
-      <a  [routerLink]="['/project', project.id]">{{project.title}}</a>
-    </mat-list-item>
-  </mat-list>
+<div class="col-sm-4 side-bar">
+  <div class="col-sm-12">
+    <h4>Anstehende Aufgaben</h4>
+    <mat-list>
+      <mat-list-item *ngFor="let project of projects">
+        <a  [routerLink]="['/project', project.id]">{{project.title}}</a>
+      </mat-list-item>
+    </mat-list>
+  </div>
 </div>
 
 <!-- <div class="grid grid-pad">
