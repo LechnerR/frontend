@@ -12,7 +12,7 @@ export class ProjectSearchService {
 
   search(term: string): Observable<Project[]> {
     return this.http
-              .get(`api/projects/?title=${term}`)
+              .get(`localhost:53627/api/Projects/?title=${term}`)
               .map(response => response.json() as Project[]);
   }
 }
