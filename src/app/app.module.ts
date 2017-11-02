@@ -13,10 +13,10 @@ import { InMemoryDataService }  from './shared/in-memory-data.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import 'hammerjs';
-import { MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatDatepickerModule, MatAutocompleteModule, MatNativeDateModule, MatGridListModule, MatTabsModule, MatTooltipModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatDatepickerModule, MatAutocompleteModule, MatNativeDateModule, MatGridListModule, MatTabsModule, MatTooltipModule, MatDialogModule } from '@angular/material';
 
 import { AppComponent } from './app/app.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardComponent, AddProjectDialog, AddTask, AddUser } from './dashboard/dashboard.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { TaskDetailComponent } from './task-detail/task-detail.component';
 import { ProjectsComponent } from './project/projects.component';
@@ -24,8 +24,8 @@ import { ProjectService } from './project.service';
 import { ProjectSearchComponent } from './project-search/project-search.component';
 
 @NgModule({
-    imports: [MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatDatepickerModule, MatAutocompleteModule, MatNativeDateModule, MatGridListModule, MatTabsModule, MatTooltipModule],
-    exports: [MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatDatepickerModule, MatAutocompleteModule, MatNativeDateModule, MatGridListModule, MatTabsModule, MatTooltipModule]
+    imports: [MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatDatepickerModule, MatAutocompleteModule, MatNativeDateModule, MatGridListModule, MatTabsModule, MatTooltipModule, MatDialogModule],
+    exports: [MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatDatepickerModule, MatAutocompleteModule, MatNativeDateModule, MatGridListModule, MatTabsModule, MatTooltipModule, MatDialogModule]
 })
 export class MyOwnCustomMaterialModule { }
 
@@ -36,7 +36,15 @@ export class MyOwnCustomMaterialModule { }
     TaskDetailComponent,
     ProjectsComponent,
     DashboardComponent,
-    ProjectSearchComponent
+    ProjectSearchComponent,
+    AddProjectDialog,
+    AddTask,
+    AddUser
+  ],
+  entryComponents: [
+    AddProjectDialog,
+    AddTask,
+    AddUser
   ],
   imports: [
     BrowserModule,
@@ -45,9 +53,8 @@ export class MyOwnCustomMaterialModule { }
     MyOwnCustomMaterialModule,
     FlexLayoutModule,
     HttpModule,
-    // HttpClientModule,
     InMemoryWebApiModule.forRoot(InMemoryDataService),
-    AppRoutingModule,
+    AppRoutingModule
   ],
   providers: [ProjectService],
   bootstrap: [AppComponent]

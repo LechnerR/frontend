@@ -4,6 +4,7 @@ import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import { Project } from './shared/project';
+import { Task } from './shared/task';
 
 @Injectable()
 export class ProjectService {
@@ -37,13 +38,21 @@ export class ProjectService {
               .catch(this.handleError);
   }
 
-  create(title: string): Promise<Project> {
+  create(project: Project): Promise<Project> {
     return this.http
-      .post(this.projectsUrl, JSON.stringify({title: title}), {headers: this.headers})
+      .post(this.projectsUrl, JSON.stringify({project: project}), {headers: this.headers})
       .toPromise()
       .then(res => res.json() as Project)
       .catch(this.handleError);
   }
+
+  // createTask(task: Task): Promise<Task> {
+  //   return this.http
+  //     .post(this.projectsUrl, JSON.stringify({task: task}), {headers: this.headers})
+  //     .toPromise()
+  //     .then(res => res.json() as Task)
+  //     .catch(this.handleError);
+  // }
 
   delete(id: number): Promise<void> {
     const url = `${this.projectsUrl}/${id}`;
