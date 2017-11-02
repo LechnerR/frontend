@@ -22,8 +22,20 @@
       </div>
     </div>
     <div class="col-sm-6">
-      <label for="user">User </label>
-      <i id="user" name="user" class="fa fa-plus-circle" (click)="addUser()"></i>
+      <div class="col-sm-12">
+        <label for="user">User </label>
+        <i id="user" name="user" class="fa fa-plus-circle" (click)="addUser()"></i>
+      </div>
+      <div class="col-sm-12">
+        <mat-form-field>
+          <label for="deadline">Deadline</label>
+          <input matInput [matDatepicker]="myDatepicker" id="deadline" [(ngModel)]="data.task.deadline" name="deadline">
+          <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+          <mat-datepicker #myDatepicker></mat-datepicker>
+          <mat-checkbox [(ngModel)]="data.task.milestone" (change)="toggleEditable($event)" name="milestone">als Meilenstein festlegen</mat-checkbox>
+        </mat-form-field>
+      </div>
+
       <!-- <div class="input-group">
         <input type="text" class="form-control" id="task" aria-describedby="addtask" placeholder="neue Aufgabe" [(ngModel)]="project.tasks" name="task"/>
         <span class="input-group-addon"><i id="addtask" name="task" class="fa fa-plus" (click)="addTask()"></i></span>

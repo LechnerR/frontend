@@ -9,4 +9,5 @@ export class Project {
   descr: string;
   notes: string;
   tasks: Task[];
+  milestones: Milestone[];
 }

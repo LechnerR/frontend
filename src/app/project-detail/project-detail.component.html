@@ -17,7 +17,7 @@
             Deadline: {{task.deadline | date:'dd.MM.yy'}}
           </div>
           <div class="col-sm-2">
-            <i class="fa fa-times-circle delete" matTooltip="Aufgabe löschen" (click)="deleteTask()"></i>
+            <i class="fa fa-times-circle delete" matTooltip="Aufgabe löschen" (click)="deleteTask(task)"></i>
           </div>
         </mat-list-item>
       </mat-list>
@@ -35,9 +35,6 @@
             </div>
             <div class="col-sm-6">
               {{user.email}}
-            </div>
-            <div class="col-sm-2">
-              <i class="fa fa-times-circle delete" matTooltip="Teammitglied löschen" (click)="deleteUser()"></i>
             </div>
           </mat-list-item>
         </div>
@@ -58,7 +55,7 @@
               {{task.title}}
             </div>
             <div class="col-sm-2">
-              <i class="fa fa-times-circle delete" matTooltip="Aufgabe löschen" (click)="deleteAppointment()"></i>
+              <i class="fa fa-times-circle delete" matTooltip="Termin löschen" (click)="deleteAppointment()"></i>
             </div>
           </mat-list-item>
         </mat-list>

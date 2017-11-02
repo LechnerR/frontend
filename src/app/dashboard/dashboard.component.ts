@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Project } from '../shared/project';
 import { Task } from '../shared/task';
 import { User } from '../shared/user';
+import { Milestone } from '../shared/milestone';
 import { ProjectService } from '../project.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
@@ -39,18 +40,10 @@ export class DashboardComponent implements OnInit {
             this.projects.push(project);
           });
       console.log('project: '+ JSON.stringify(this.project));
+      this.projectService.getProjects().then(projects => this.projects = projects);
     });
   }
 
-  // addProject(): void {
-  //   if (!this.project) { return; }
-  //
-  //   this.projectService.create(this.project)
-  //     .then(project => {
-  //       this.projects.push(project);
-  //       this.selectedProject = null;
-  //     });
-  // }
 }
 
 @Component({
@@ -60,7 +53,9 @@ export class DashboardComponent implements OnInit {
 
 export class AddProjectDialog {
 tasks: Task[] = [];
+milestones: Milestone[] = [];
 task = new Task();
+mildestone = new Milestone();
 
   constructor(
     public dialog: MatDialog,
@@ -97,6 +92,7 @@ export class AddTask {
 
   users: User[] = [];
   user = new User();
+  milestone = false;
 
   constructor(
     public dialog: MatDialog,
@@ -106,6 +102,15 @@ export class AddTask {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  toggleEditable(event) {
+      if ( event.checked ) {
+           this.milestone = true;
+      } else {
+        this.milestone = false;
+      }
+      console.log(this.milestone);
   }
 
   addUser(): void {

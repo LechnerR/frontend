@@ -5,6 +5,7 @@ import 'rxjs/add/operator/switchMap';
 
 import { ProjectService } from '../project.service';
 import { Project } from '../shared/project';
+import { Task } from '../shared/task';
 
 @Component({
   selector: 'project-detail',
@@ -26,6 +27,14 @@ export class ProjectDetailComponent implements OnInit {
         .subscribe(project => this.project = project);
     }
 
+    deleteTask(task: Task): void {
+      this.projectService
+        .delete(task.id)
+        .then(() => {
+          this.project.tasks = this.project.tasks.filter(t => t !== task);
+        });
+    }
+
     goBack(): void {
       this.location.back();
     }
@@ -35,27 +44,11 @@ export class ProjectDetailComponent implements OnInit {
           .then(() => this.goBack());
     }
 
-    addTask(): void {
-
-    }
-
-    deleteTask(): void {
-
-    }
-
-    addUser(): void {
-
-    }
-
-    deleteUser(): void {
-
-    }
-
     addAppointment(): void {
 
     }
 
     deleteAppointment(): void {
-      
+
     }
 }

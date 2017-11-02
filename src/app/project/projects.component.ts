@@ -60,14 +60,14 @@ get diagnostic() { return JSON.stringify(this.project); }
   //     });
   // }
 
-  delete(project: Project): void {
-    this.projectService
-      .delete(project.id)
-      .then(() => {
-        this.projects = this.projects.filter(p => p !== project);
-        if (this.selectedProject === project) { this.selectedProject = null; }
-      });
-  }
+  // delete(project: Project): void {
+  //   this.projectService
+  //     .delete(project.id)
+  //     .then(() => {
+  //       this.projects = this.projects.filter(p => p !== project);
+  //       if (this.selectedProject === project) { this.selectedProject = null; }
+  //     });
+  // }
 
   ngOnInit(): void {
     this.getProjects();

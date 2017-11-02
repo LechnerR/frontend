@@ -13,7 +13,7 @@ import { InMemoryDataService }  from './shared/in-memory-data.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import 'hammerjs';
-import { MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatDatepickerModule, MatAutocompleteModule, MatNativeDateModule, MatGridListModule, MatTabsModule, MatTooltipModule, MatDialogModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatDatepickerModule, MatAutocompleteModule, MatNativeDateModule, MatGridListModule, MatCheckboxModule, MatTabsModule, MatTooltipModule, MatDialogModule } from '@angular/material';
 
 import { AppComponent } from './app/app.component';
 import { DashboardComponent, AddProjectDialog, AddTask, AddUser } from './dashboard/dashboard.component';
@@ -24,8 +24,8 @@ import { ProjectService } from './project.service';
 import { ProjectSearchComponent } from './project-search/project-search.component';
 
 @NgModule({
-    imports: [MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatDatepickerModule, MatAutocompleteModule, MatNativeDateModule, MatGridListModule, MatTabsModule, MatTooltipModule, MatDialogModule],
-    exports: [MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatDatepickerModule, MatAutocompleteModule, MatNativeDateModule, MatGridListModule, MatTabsModule, MatTooltipModule, MatDialogModule]
+    imports: [MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatDatepickerModule, MatAutocompleteModule, MatNativeDateModule, MatGridListModule, MatCheckboxModule, MatTabsModule, MatTooltipModule, MatDialogModule],
+    exports: [MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatDatepickerModule, MatAutocompleteModule, MatNativeDateModule, MatGridListModule, MatCheckboxModule, MatTabsModule, MatTooltipModule, MatDialogModule]
 })
 export class MyOwnCustomMaterialModule { }
 
