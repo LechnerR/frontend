@@ -5,6 +5,8 @@ import 'rxjs/add/operator/toPromise';
 
 import { Project } from './shared/project';
 import { Task } from './shared/task';
+import { Milestone } from './shared/milestone';
+import { User } from './shared/user';
 
 @Injectable()
 export class ProjectService {
@@ -41,21 +43,29 @@ export class ProjectService {
               .catch(this.handleError);
   }
 
-  create(project: Project): Promise<Project> {
+  createProject(project: Project): Promise<Project> {
     return this.http
-      .post(this.projectsUrl, JSON.stringify({project: project}), {headers: this.headers})
+      .post(this.projectsUrl, JSON.stringify(project), {headers: this.headers})
       .toPromise()
       .then(res => res.json() as Project)
       .catch(this.handleError);
   }
 
-  // createTask(task: Task): Promise<Task> {
-  //   return this.http
-  //     .post(this.projectsUrl, JSON.stringify({task: task}), {headers: this.headers})
-  //     .toPromise()
-  //     .then(res => res.json() as Task)
-  //     .catch(this.handleError);
-  // }
+  createMilestone(milestone: Milestone): Promise<Milestone> {
+    return this.http
+      .post(this.projectsUrl, JSON.stringify(milestone), {headers: this.headers})
+      .toPromise()
+      .then(res => res.json() as Milestone)
+      .catch(this.handleError);
+  }
+
+  createTask(task: Task): Promise<Task> {
+    return this.http
+      .post(this.projectsUrl, JSON.stringify(task), {headers: this.headers})
+      .toPromise()
+      .then(res => res.json() as Task)
+      .catch(this.handleError);
+  }
 
   delete(id: number): Promise<void> {
     const url = `${this.projectsUrl}/${id}`;

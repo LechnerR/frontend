@@ -3,7 +3,13 @@
   <project-search></project-search>
   <mat-grid-list cols="3" rowHeight="2:1" gutterSize="8px">
       <mat-grid-tile *ngFor="let project of projects" [routerLink]="['/project', project.id]">
+
           {{project.title}}
+          <i class="fa fa-trash-o delete" aria-hidden="true" matTooltip="Projekt löschen" (click)="delete(project); $event.stopPropagation()"></i>
+          <i class="fa fa-pencil" aria-hidden="true" (click)="updateProject(project)" matTooltip="Projekt bearbeiten"></i>
+        <!-- <div class="col-xs-12">
+          <i class="fa fa-trash-o delete" aria-hidden="true" matTooltip="Projekt löschen" (click)="delete(project); $event.stopPropagation()"></i>
+        </div> -->
       </mat-grid-tile>
   </mat-grid-list>
   <div class="form-group col-sm-8">
@@ -19,7 +25,17 @@
     <h4>Anstehende Aufgaben</h4>
     <mat-list>
       <mat-list-item *ngFor="let project of projects">
-        <a  [routerLink]="['/project', project.id]">{{project.title}}</a>
+        <ul>
+          <li *ngIf="project.tasks">
+            <a [routerLink]="['/project', project.id]">{{project.title}}</a>
+            <ul>
+              <li *ngFor="let task of project.tasks">
+
+                <span>{{task.title}}</span>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </mat-list-item>
     </mat-list>
   </div>

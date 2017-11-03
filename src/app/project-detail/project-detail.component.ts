@@ -6,6 +6,8 @@ import 'rxjs/add/operator/switchMap';
 import { ProjectService } from '../project.service';
 import { Project } from '../shared/project';
 import { Task } from '../shared/task';
+import { Milestone } from '../shared/milestone';
+import { User } from '../shared/user';
 
 @Component({
   selector: 'project-detail',
@@ -32,6 +34,15 @@ export class ProjectDetailComponent implements OnInit {
         .delete(task.id)
         .then(() => {
           this.project.tasks = this.project.tasks.filter(t => t !== task);
+        });
+        console.log(this.project.tasks);
+    }
+
+    deleteMilestone(milestone: Milestone): void {
+      this.projectService
+        .delete(milestone.id)
+        .then(() => {
+          this.project.milestones = this.project.milestones.filter(ms => ms !== milestone);
         });
     }
 

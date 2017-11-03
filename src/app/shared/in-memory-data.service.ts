@@ -10,7 +10,7 @@ export class InMemoryDataService implements InMemoryDbService {
             title: "Aufgabe 1",
             descr: "Aufgabenbeschreibung 1",
             notes: "Aufgaben notizen",
-            users: [
+            user: [
             {
               id: 0,
               name: "Nadine",
@@ -18,15 +18,15 @@ export class InMemoryDataService implements InMemoryDbService {
               image: "string"
             }
             ],
-            deadline: Date.now(),
-            milestone: true
+            deadline: new Date('2017/11/11'),
+            milestone: false
           },
           {
             id: 1,
             title: "Aufgabe 2",
             descr: "Aufgabenbeschreibung 2",
             notes: "Aufgaben notizen",
-            users: [
+            user: [
             {
               id: 0,
               name: "Flo",
@@ -34,9 +34,21 @@ export class InMemoryDataService implements InMemoryDbService {
               image: "string"
             }
             ],
-            deadline: Date.now(),
+            deadline: new Date('2017/12/12'),
             milestone: true
           }
+        ],
+        milestones: [
+        {
+          id: 0,
+          title: "Meilenstein 1",
+          deadline: new Date('2017/11/11')
+        },
+        {
+          id: 1,
+          title: "Meilenstein 2",
+          deadline: new Date('2017/12/12')
+        }
         ]
       },
       {
