@@ -14,7 +14,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 export class DashboardComponent implements OnInit {
   projects: Project[] = [];
-  project = new Project();
+  project: Project;
 
   constructor (
     private projectService: ProjectService,
@@ -26,7 +26,17 @@ export class DashboardComponent implements OnInit {
     this.projectService.getProjects().then(projects => this.projects = projects);
   }
 
+  delete(project: Project): void {
+  this.projectService
+      .delete(project.id)
+      .then(() => {
+        this.projects = this.projects.filter(p => p !== project);
+      });
+}
+
   addProject(): void {
+    this.project = new Project();
+
     let dialogRef = this.dialog.open(AddProjectDialog, {
       data: { project: this.project }
     });
@@ -35,13 +45,16 @@ export class DashboardComponent implements OnInit {
       this.project = result;
       if (!this.project) { return; }
 
-        this.projectService.create(this.project)
+        this.projectService.createProject(this.project)
           .then(project => {
             this.projects.push(project);
           });
-      console.log('project: ' + this.project);
-      this.projectService.getProjects().then(projects => this.projects = projects);
+      console.log('project: '+ JSON.stringify(this.projects));
     });
+  }
+
+  updateProject(project): void {
+    
   }
 
 }
@@ -54,10 +67,11 @@ export class DashboardComponent implements OnInit {
 export class AddProjectDialog {
 tasks: Task[] = [];
 milestones: Milestone[] = [];
-task = new Task();
-mildestone = new Milestone();
+task: Task;
+milestone: Milestone
 
   constructor(
+    private projectService: ProjectService,
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<AddProjectDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
@@ -66,15 +80,29 @@ mildestone = new Milestone();
   // get diagnostic() { return JSON.stringify(this.data.project); }
 
   addTask(): void {
+    this.task = new Task();
     let dialogRef = this.dialog.open(AddTask, {
       data: { task: this.task }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       this.task = result;
-      this.tasks.push(this.task);
+      this.data.project.milestones = this.milestones;
+      if (this.task.milestone) {
+        this.milestone = new Milestone();
+        this.milestone.deadline = this.task.deadline;
+        this.milestone.title=this.task.title;
+        this.projectService.createMilestone(this.milestone)
+          .then(ms => {
+            this.milestones.push(ms);
+          });
+      }
+      this.projectService.createTask(this.task)
+        .then(t => {
+          this.tasks.push(t);
+        });
       this.data.project.tasks = this.tasks;
-      console.log('tasks: '+ JSON.stringify(this.data.project.tasks));
+      console.log('tasks: '+ JSON.stringify(this.data.project));
     });
   }
 
@@ -91,8 +119,7 @@ mildestone = new Milestone();
 export class AddTask {
 
   users: User[] = [];
-  user = new User();
-  milestone = false;
+  user: User;
 
   constructor(
     public dialog: MatDialog,
@@ -106,14 +133,15 @@ export class AddTask {
 
   toggleEditable(event) {
       if ( event.checked ) {
-           this.milestone = true;
+           this.data.task.milestone = true;
       } else {
-        this.milestone = false;
+        this.data.task.milestone = false;
       }
-      console.log(this.milestone);
+      console.log(this.data.task.milestone);
   }
 
   addUser(): void {
+    this.user = new User();
     let dialogRef = this.dialog.open(AddUser, {
       data: { user: this.user }
     });
@@ -122,7 +150,7 @@ export class AddTask {
       this.user = result;
       this.users.push(this.user);
       this.data.task.user = this.users;
-      console.log('users: '+ JSON.stringify(this.data));
+      console.log('users: '+ JSON.stringify(this.data.task));
     });
   }
   //delete that when finished
@@ -142,4 +170,7 @@ export class AddUser {
     public dialogRef: MatDialogRef<AddUser>,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
+    onNoClick(): void {
+      this.dialogRef.close();
+    }
 }

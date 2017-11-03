@@ -21,15 +21,15 @@
           </div>
         </mat-list-item>
       </mat-list>
-      <div class="form-group col-xs-12">
+      <!-- <div class="form-group col-xs-12">
         <label for="newTask">neue Aufgabe</label>
         <i id="newTask" name="newTask" class="fa fa-plus-circle" (click)="addTask()"></i>
-      </div>
+      </div> -->
     </mat-tab>
     <mat-tab label="Team">
       <mat-list>
         <div *ngFor="let task of project.tasks">
-          <mat-list-item *ngFor="let user of task.users">
+          <mat-list-item *ngFor="let user of task.user">
             <div class="col-sm-4">
               {{user.name}}
             </div>
@@ -39,36 +39,37 @@
           </mat-list-item>
         </div>
       </mat-list>
-      <div class="form-group col-xs-12">
+      <!-- <div class="form-group col-xs-12">
         <label for="newUser">neuer User</label>
         <i id="newUser" name="newUser" class="fa fa-plus-circle" (click)="addUser()"></i>
-      </div>
+      </div> -->
     </mat-tab>
     <mat-tab label="Termine">
       <div class="col-sm-12">
         <mat-list>
           <mat-list-item *ngFor="let task of project.tasks">
-            <div class="col-sm-4">
+            <div class="col-sm-4"
+            [class.milestone]="task.milestone">
               {{task.deadline | date:'dd. MMMM y'}}
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-6" [class.milestone]="task.milestone">
               {{task.title}}
             </div>
-            <div class="col-sm-2">
-              <i class="fa fa-times-circle delete" matTooltip="Termin löschen" (click)="deleteAppointment()"></i>
-            </div>
+            <!-- <div class="col-sm-2" *ngIf="task.milestone">
+              <i class="fa fa-times-circle delete" matTooltip="Meilenstein löschen" (click)="deleteMilestone(task.deadline)"></i>
+            </div> -->
           </mat-list-item>
         </mat-list>
       </div>
-      <div class="form-group col-xs-12">
+      <!-- <div class="form-group col-xs-12">
         <mat-form-field>
-          <label for="newAppointment">neuer Termin</label>
+          <label for="newAppointment">neuer Meilenstein</label>
           <input matInput [matDatepicker]="myDatepicker" id="newAppointment">
           <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
           <mat-datepicker #myDatepicker></mat-datepicker>
-          <i class="fa fa-plus-circle" matTooltip="neuen Termin festlegen" (click)="addAppointment()"></i>
+          <i class="fa fa-plus-circle" matTooltip="neuen Meilenstein festlegen" (click)="addAppointment()"></i>
         </mat-form-field>
-      </div>
+      </div> -->
     </mat-tab>
   </mat-tab-group>
 </div>

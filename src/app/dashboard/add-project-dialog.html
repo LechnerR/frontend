@@ -2,14 +2,14 @@
   <h3 mat-dialog-title>Projekt anlegen</h3>
 <!-- {{diagnostic}} -->
 <div mat-dialog-content>
-  <form (ngSubmit)="onSubmit()" #projects="ngForm">
+  <form (ngSubmit)="onNoClick()" #projects="ngForm">
     <div class="col-sm-6">
       <div class="form-group">
         <label for="title">Titel: </label>
-        <input type="text" class="form-control" id="title" placeholder="Projekttitel" required [(ngModel)]="data.project.title" name="title" #title="ngModel"/>
-        <div [hidden]="title.valid || title.pristine" class="alert alert-danger">
+        <input type="text" class="form-control" id="title" placeholder="Projekttitel" [(ngModel)]="data.project.title" name="title" #title="ngModel"/>
+        <!-- <div [hidden]="title.valid || title.pristine" class="alert alert-danger">
           Name is required
-        </div>
+        </div> -->
       </div>
       <div class="form-group">
         <label for="descr">Beschreibung: </label>
@@ -21,12 +21,16 @@
       </div>
     </div>
     <div class="col-sm-6">
-      <label for="task">Aufgaben </label>
-      <i id="task" name="task" class="fa fa-plus-circle" (click)="addTask()"></i>
-      <!-- <div class="input-group">
-        <input type="text" class="form-control" id="task" aria-describedby="addtask" placeholder="neue Aufgabe" [(ngModel)]="project.tasks" name="task"/>
-        <span class="input-group-addon"><i id="addtask" name="task" class="fa fa-plus" (click)="addTask()"></i></span>
-      </div> -->
+      <div class="col-sm-12">
+        <label>Aufgaben:</label>
+      </div>
+      <div class="col-sm-12" *ngFor="let task of project.tasks">
+        {{task.title}}
+      </div>
+      <div class="col-sm-12">
+        <label for="task">Aufgaben </label>
+        <i id="task" name="task" class="fa fa-plus-circle" (click)="addTask()"></i>
+      </div>
     </div>
     <div mat-dialog-actions class="col-sm-12">
       <button mat-button (click)="onNoClick()" tabindex="-1">Abbrechen</button>
