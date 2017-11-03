@@ -39,7 +39,7 @@ export class DashboardComponent implements OnInit {
           .then(project => {
             this.projects.push(project);
           });
-      console.log('project: '+ JSON.stringify(this.project));
+      console.log('project: ' + this.project);
       this.projectService.getProjects().then(projects => this.projects = projects);
     });
   }

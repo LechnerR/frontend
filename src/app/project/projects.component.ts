@@ -24,7 +24,7 @@ export class ProjectsComponent implements OnInit {
     private projectService: ProjectService,
     public dialog: MatDialog
   ) { }
-//delete that when finished
+// delete that when finished
 get diagnostic() { return JSON.stringify(this.project); }
 
   getProjects(): void {

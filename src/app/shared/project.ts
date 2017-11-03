@@ -6,8 +6,8 @@ export class Project {
 
   id: number;
   title: string;
-  descr: string;
-  notes: string;
+  description: string;
+  notice: string;
   tasks: Task[];
   milestones: Milestone[];
 }
