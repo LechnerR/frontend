@@ -24,8 +24,8 @@
       <div class="col-sm-12">
         <label>Aufgaben:</label>
       </div>
-      <div class="col-sm-12" *ngFor="let task of project.tasks">
-        {{task.title}}
+      <div class="col-sm-12" *ngFor="let task of data.project.tasks">
+        <button mat-button (click)="taskdetails(task)">{{task.title}}</button> 
       </div>
       <div class="col-sm-12">
         <label for="task">Aufgaben </label>

@@ -8,9 +8,9 @@
       <div class="form-group">
         <label for="title">Titel: </label>
         <input type="text" class="form-control" id="title" placeholder="Aufgabentitel" required [(ngModel)]="data.task.title" name="title" #title="ngModel"/>
-        <div [hidden]="title.valid || title.pristine" class="alert alert-danger">
+        <!-- <div [hidden]="title.valid || title.pristine" class="alert alert-danger">
           Name is required
-        </div>
+        </div> -->
       </div>
       <div class="form-group">
         <label for="descr">Beschreibung: </label>
@@ -22,17 +22,14 @@
       </div>
     </div>
     <div class="col-sm-6">
-      <div *ngIf="data.task.users?.length > 0" class="col-sm-12">
-        <div *ngFor="let user of data.task.users" class="col-sm-4">
-          {{data.task.user.name}} {{data.task.user.email}}
-        </div>
-      </div>
       <div class="col-sm-12">
         <div class="col-sm-12">
           <label>User:</label>
         </div>
-        <div class="col-sm-12" *ngFor="let user of users">
-          {{user.name}}
+        <div *ngIf="data.task.user?.length > 0" class="col-sm-12">
+          <div *ngFor="let user of data.task.user" class="col-sm-12">
+            <button mat-button (click)="userdetails(user)">{{user.name}}</button>
+          </div>
         </div>
         <div class="col-sm-12">
           <label for="user">User </label>

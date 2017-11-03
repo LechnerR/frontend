@@ -35,16 +35,16 @@ export class ProjectDetailComponent implements OnInit {
         .then(() => {
           this.project.tasks = this.project.tasks.filter(t => t !== task);
         });
-        console.log(this.project.tasks);
+        console.log(task.id);
     }
 
-    deleteMilestone(milestone: Milestone): void {
-      this.projectService
-        .delete(milestone.id)
-        .then(() => {
-          this.project.milestones = this.project.milestones.filter(ms => ms !== milestone);
-        });
-    }
+    // deleteMilestone(milestone: Milestone): void {
+    //   this.projectService
+    //     .delete(milestone.id)
+    //     .then(() => {
+    //       this.project.milestones = this.project.milestones.filter(ms => ms !== milestone);
+    //     });
+    // }
 
     goBack(): void {
       this.location.back();
