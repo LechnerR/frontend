@@ -1,37 +1,35 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { Project } from '../shared/project';
-import { Task } from '../shared/task';
-import { ProjectService } from '../project.service';
-import { Router } from '@angular/router';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-
-@Component({
-  selector: 'projects',
-  templateUrl: './projects.component.html',
-  styleUrls: ['./projects.component.scss']
-})
-
-export class ProjectsComponent implements OnInit {
-
-  projects: Project[];
-  selectedProject: Project;
-
-  project = new Project();
-  task = new Task();
-
-  constructor (
-    private router: Router,
-    private projectService: ProjectService,
-    public dialog: MatDialog
-  ) { }
-//delete that when finished
-get diagnostic() { return JSON.stringify(this.project); }
-
-  getProjects(): void {
-    this.projectService
-      .getProjects()
-      .then(projects => this.projects = projects);
-  }
+// import { Component, OnInit, Inject } from '@angular/core';
+// import { Project } from '../shared/project';
+// import { Task } from '../shared/task';
+// import { ProjectService } from '../project.service';
+// import { Router } from '@angular/router';
+// import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+//
+// @Component({
+//   selector: 'projects',
+//   templateUrl: './projects.component.html',
+//   styleUrls: ['./projects.component.scss']
+// })
+//
+// export class ProjectsComponent implements OnInit {
+//
+//   projects: Project[];
+//   selectedProject: Project;
+//
+//   project = new Project();
+//   task = new Task();
+//
+//   constructor (
+//     private router: Router,
+//     private projectService: ProjectService,
+//     public dialog: MatDialog
+//   ) { }
+//
+//   getProjects(): void {
+//     this.projectService
+//       .getProjects()
+//       .then(projects => this.projects = projects);
+//   }
 
 
 
@@ -69,19 +67,19 @@ get diagnostic() { return JSON.stringify(this.project); }
   //     });
   // }
 
-  ngOnInit(): void {
-    this.getProjects();
-  }
-
-  onSelect(project: Project): void {
-    this.selectedProject = project;
-  }
-
-  gotoDetail(): void {
-    this.router.navigate(['/project', this.selectedProject.id]);
-  }
-
-}
+//   ngOnInit(): void {
+//     this.getProjects();
+//   }
+//
+//   onSelect(project: Project): void {
+//     this.selectedProject = project;
+//   }
+//
+//   gotoDetail(): void {
+//     this.router.navigate(['/project', this.selectedProject.id]);
+//   }
+//
+// }
 
 // @Component({
 //   selector: 'add-task',
