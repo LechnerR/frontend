@@ -36,7 +36,6 @@ export class DashboardComponent implements OnInit {
 
   addProject(): void {
     this.project = new Project();
-
     let dialogRef = this.dialog.open(AddProjectDialog, {
       data: { project: this.project }
     });
@@ -49,12 +48,18 @@ export class DashboardComponent implements OnInit {
           .then(project => {
             this.projects.push(project);
           });
-      console.log('project: '+ JSON.stringify(this.projects));
+      console.log('project: '+ JSON.stringify(this.project));
     });
   }
 
-  updateProject(project): void {
-    
+  updateProject(project: Project): void {
+    if(!project) { return; }
+    this.project = project;
+    let dialogRef = this.dialog.open(AddProjectDialog, {
+      data: { project: this.project }
+    });
+
+    //nu ned fertig
   }
 
 }
@@ -87,22 +92,51 @@ milestone: Milestone
 
     dialogRef.afterClosed().subscribe(result => {
       this.task = result;
-      this.data.project.milestones = this.milestones;
+      if (!this.task) { return; }
+
       if (this.task.milestone) {
         this.milestone = new Milestone();
         this.milestone.deadline = this.task.deadline;
         this.milestone.title=this.task.title;
-        this.projectService.createMilestone(this.milestone)
-          .then(ms => {
-            this.milestones.push(ms);
-          });
+        this.milestones.push(this.milestone);
+        // this.projectService.createMilestone(this.milestone)
+        //   .then(ms => {
+        //     this.milestones.push(ms);
+        //   });
       }
-      this.projectService.createTask(this.task)
-        .then(t => {
-          this.tasks.push(t);
-        });
+      this.data.project.milestones = this.milestones;
+      // this.projectService.createTask(this.task)
+      //   .then(t => {
+      //     this.tasks.push(t);
+      //   });
+      this.tasks.push(this.task);
       this.data.project.tasks = this.tasks;
-      console.log('tasks: '+ JSON.stringify(this.data.project));
+    });
+  }
+
+  taskdetails(task): void {
+    if (!task) { return; }
+    this.data.tasks = this.data.tasks.filter(t => t !== task);
+    this.task = task;
+
+    let dialogRef = this.dialog.open(AddTask, {
+      data: { task: this.task }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.task = result;
+      if (!this.task) { return; }
+
+
+      if (this.task.milestone) {
+        this.milestone = new Milestone();
+        this.milestone.deadline = this.task.deadline;
+        this.milestone.title=this.task.title;
+        this.milestones.push(this.milestone);
+      }
+      this.data.project.milestones = this.milestones;
+      this.tasks.push(this.task);
+      this.data.project.tasks = this.tasks;
     });
   }
 
@@ -148,13 +182,34 @@ export class AddTask {
 
     dialogRef.afterClosed().subscribe(result => {
       this.user = result;
+      if (!this.user) { return; }
+      // this.projectService.createUser(this.user)
+      //   .then(u => {
+      //     this.users.push(u);
+      //   });
       this.users.push(this.user);
       this.data.task.user = this.users;
       console.log('users: '+ JSON.stringify(this.data.task));
     });
   }
-  //delete that when finished
-  // get diagnostic() { return JSON.stringify(this.data.task); }
+
+  userdetails(user: User) {
+    if (!user) { return; }
+    this.data.task.user = this.data.task.user.filter(u => u !== user);
+    this.user = user;
+
+    let dialogRef = this.dialog.open(AddUser, {
+      data: { user: this.user }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.user = result;
+      if (!this.user) { return; }
+      this.users.push(this.user);
+      this.data.task.user = this.users;
+      console.log('users: '+ JSON.stringify(this.data.task));
+    });
+  }
 
 }
 

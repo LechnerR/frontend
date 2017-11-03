@@ -51,21 +51,29 @@ export class ProjectService {
       .catch(this.handleError);
   }
 
-  createMilestone(milestone: Milestone): Promise<Milestone> {
-    return this.http
-      .post(this.projectsUrl, JSON.stringify(milestone), {headers: this.headers})
-      .toPromise()
-      .then(res => res.json() as Milestone)
-      .catch(this.handleError);
-  }
-
-  createTask(task: Task): Promise<Task> {
-    return this.http
-      .post(this.projectsUrl, JSON.stringify(task), {headers: this.headers})
-      .toPromise()
-      .then(res => res.json() as Task)
-      .catch(this.handleError);
-  }
+  // createMilestone(milestone: Milestone): Promise<Milestone> {
+  //   return this.http
+  //     .post(this.projectsUrl, JSON.stringify(milestone), {headers: this.headers})
+  //     .toPromise()
+  //     .then(res => res.json() as Milestone)
+  //     .catch(this.handleError);
+  // }
+  //
+  // createTask(task: Task): Promise<Task> {
+  //   return this.http
+  //     .post(this.projectsUrl, JSON.stringify(task), {headers: this.headers})
+  //     .toPromise()
+  //     .then(res => res.json() as Task)
+  //     .catch(this.handleError);
+  // }
+  //
+  // createUser(user: User): Promise<User> {
+  //   return this.http
+  //     .post(this.projectsUrl, JSON.stringify(user), {headers: this.headers})
+  //     .toPromise()
+  //     .then(res => res.json() as User)
+  //     .catch(this.handleError);
+  // }
 
   delete(id: number): Promise<void> {
     const url = `${this.projectsUrl}/${id}`;
