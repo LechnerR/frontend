@@ -4,7 +4,7 @@ export class InMemoryDataService implements InMemoryDbService {
   createDb() {
     const projects = [
       {
-        id: 0, title: "zProjekt AA", descr: "Beschreibung AA", notes: "Notizen", tasks: [
+        id: 0, title: "zProjekt AA", descrription: "Beschreibung AA", notes: "Notizen", tasks: [
           {
             id: 0,
             title: "Aufgabe 1",
@@ -14,8 +14,7 @@ export class InMemoryDataService implements InMemoryDbService {
             {
               id: 0,
               name: "Nadine",
-              email: "nadine@nadine.com",
-              image: "string"
+              email: "nadine@nadine.com"
             }
             ],
             deadline: new Date('2017/11/11'),
@@ -30,8 +29,7 @@ export class InMemoryDataService implements InMemoryDbService {
             {
               id: 0,
               name: "Flo",
-              email: "flo@flo.com",
-              image: "string"
+              email: "flo@flo.com"
             }
             ],
             deadline: new Date('2017/12/12'),

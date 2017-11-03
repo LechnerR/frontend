@@ -3,11 +3,12 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 import 'rxjs/add/operator/switchMap';
 
-import { ProjectService } from '../project.service';
 import { Project } from '../shared/project';
-import { Task } from '../shared/task';
-import { Milestone } from '../shared/milestone';
-import { User } from '../shared/user';
+// import { Project_task } from '../shared/project_task';
+// import { Employee } from '../shared/employee';
+// import { Project_task_assignment } from '../shared/project_task_assignment';
+// import { Task_employee_assignment } from '../shared/task_employee_assignment';
+import { ProjectService } from '../project.service';
 
 @Component({
   selector: 'project-detail',
@@ -29,37 +30,14 @@ export class ProjectDetailComponent implements OnInit {
         .subscribe(project => this.project = project);
     }
 
-    deleteTask(task: Task): void {
-      this.projectService
-        .delete(task.id)
-        .then(() => {
-          this.project.tasks = this.project.tasks.filter(t => t !== task);
-        });
-        console.log(task.id);
-    }
 
-    // deleteMilestone(milestone: Milestone): void {
-    //   this.projectService
-    //     .delete(milestone.id)
-    //     .then(() => {
-    //       this.project.milestones = this.project.milestones.filter(ms => ms !== milestone);
-    //     });
+    // goBack(): void {
+    //   this.location.back();
+    // }
+    //
+    // save(): void {
+    //   this.projectService.update(this.project)
+    //       .then(() => this.goBack());
     // }
 
-    goBack(): void {
-      this.location.back();
-    }
-
-    save(): void {
-      this.projectService.update(this.project)
-          .then(() => this.goBack());
-    }
-
-    addAppointment(): void {
-
-    }
-
-    deleteAppointment(): void {
-
-    }
 }

@@ -19,7 +19,7 @@ import { AppComponent } from './app/app.component';
 import { DashboardComponent, AddProjectDialog, AddTask, AddUser } from './dashboard/dashboard.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { TaskDetailComponent } from './task-detail/task-detail.component';
-import { ProjectsComponent } from './project/projects.component';
+// import { ProjectsComponent } from './project/projects.component';
 import { ProjectService } from './project.service';
 import { ProjectSearchComponent } from './project-search/project-search.component';
 
@@ -34,7 +34,7 @@ export class MyOwnCustomMaterialModule { }
     AppComponent,
     ProjectDetailComponent,
     TaskDetailComponent,
-    ProjectsComponent,
+    // ProjectsComponent,
     DashboardComponent,
     ProjectSearchComponent,
     AddProjectDialog,

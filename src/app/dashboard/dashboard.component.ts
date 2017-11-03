@@ -1,8 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Project } from '../shared/project';
-import { Task } from '../shared/task';
-import { User } from '../shared/user';
-import { Milestone } from '../shared/milestone';
+import { Project_task } from '../shared/project_task';
+import { Employee } from '../shared/employee';
+import { Project_task_assignment } from '../shared/project_task_assignment';
+import { Task_employee_assignment } from '../shared/task_employee_assignment';
 import { ProjectService } from '../project.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
@@ -15,6 +16,11 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 export class DashboardComponent implements OnInit {
   projects: Project[] = [];
   project: Project;
+  tasks: Project_task[] = [];
+  task: Project_task;
+  users: Employee[] = [];
+  user: Employee;
+  p: { start_date: Date, end_date: Date, description: string, title: string, notice: string };
 
   constructor (
     private projectService: ProjectService,
@@ -35,28 +41,59 @@ export class DashboardComponent implements OnInit {
 }
 
   addProject(): void {
-    this.project = new Project();
+    this.p = {
+      start_date: new Date(),
+      end_date: null,
+      title: '',
+      description: '',
+      notice: ''
+    };
     let dialogRef = this.dialog.open(AddProjectDialog, {
-      data: { project: this.project }
+      data: { project: this.p }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.project = result;
-      if (!this.project) { return; }
+      this.p = result;
+      if (!this.p) { return; }
 
-        this.projectService.createProject(this.project)
+        this.projectService.createProject(new Project(this.p['start_date'], this.p['end_date'], this.p['title'], this.p['description'], this.p['notice']))
           .then(project => {
-            this.projects.push(project);
+
+            if (this.p['tasks']) {
+              for (let t of this.p['tasks']) {
+                this.projectService.createTask(new Project_task(t['title'], t['description'], t['notice'], t['deadline'], t['milestone']))
+                  .then(task => {
+                    this.projectService.createProjectTaskAssignment(new Project_task_assignment(project.id,task.id));
+                    if (t['user']) {
+                      for (let u of t['user']) {
+                        this.projectService.createUser(new Employee(u['name'], u['email']))
+                          .then(user => {
+                            this.users.push(user);
+                            this.projectService.createTaskEmployeeAssignment(new Task_employee_assignment(task.id, user.id));
+                          });
+                      }
+                    }
+                  });
+              }
+            }
           });
-      console.log('project: '+ JSON.stringify(this.project));
+      // console.log('test: ' + this.p['title']);
+      // console.log('tasks of project: ' + JSON.stringify(this.p['tasks']));
+      // if (this.p['tasks']) {
+      //   for (let e of this.p['tasks']) {
+      //     console.log('user of tasks: ' + JSON.stringify(e['user']));
+      //   }
+      // }
+      // console.log('project: '+ JSON.stringify(this.p));
+      this.projectService.getProjects().then(projects => this.projects = projects);
     });
   }
 
   updateProject(project: Project): void {
     if(!project) { return; }
-    this.project = project;
+    this.p = project;
     let dialogRef = this.dialog.open(AddProjectDialog, {
-      data: { project: this.project }
+      data: { project: this.p }
     });
 
     //nu ned fertig
@@ -70,10 +107,8 @@ export class DashboardComponent implements OnInit {
 })
 
 export class AddProjectDialog {
-tasks: Task[] = [];
-milestones: Milestone[] = [];
-task: Task;
-milestone: Milestone
+task: { title: string, description: string, notice: string, deadline: Date, milestone: boolean };
+taskArray: Array<{title: string, description: string, notice: string, deadline: Date, milestone: boolean}> = [];
 
   constructor(
     private projectService: ProjectService,
@@ -81,11 +116,15 @@ milestone: Milestone
     public dialogRef: MatDialogRef<AddProjectDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
-  //delete that when finished
-  // get diagnostic() { return JSON.stringify(this.data.project); }
 
   addTask(): void {
-    this.task = new Task();
+    this.task = {
+      title: '',
+      description: '',
+      notice: '',
+      deadline: null,
+      milestone: false
+    };
     let dialogRef = this.dialog.open(AddTask, {
       data: { task: this.task }
     });
@@ -94,29 +133,18 @@ milestone: Milestone
       this.task = result;
       if (!this.task) { return; }
 
-      if (this.task.milestone) {
-        this.milestone = new Milestone();
-        this.milestone.deadline = this.task.deadline;
-        this.milestone.title=this.task.title;
-        this.milestones.push(this.milestone);
-        // this.projectService.createMilestone(this.milestone)
-        //   .then(ms => {
-        //     this.milestones.push(ms);
-        //   });
-      }
-      this.data.project.milestones = this.milestones;
       // this.projectService.createTask(this.task)
       //   .then(t => {
       //     this.tasks.push(t);
       //   });
-      this.tasks.push(this.task);
-      this.data.project.tasks = this.tasks;
+      this.taskArray.push(this.task);
+      this.data.project.tasks = this.taskArray;
     });
   }
 
   taskdetails(task): void {
     if (!task) { return; }
-    this.data.tasks = this.data.tasks.filter(t => t !== task);
+    this.data.project.tasks = this.data.project.tasks.filter(t => t !== task);
     this.task = task;
 
     let dialogRef = this.dialog.open(AddTask, {
@@ -127,16 +155,7 @@ milestone: Milestone
       this.task = result;
       if (!this.task) { return; }
 
-
-      if (this.task.milestone) {
-        this.milestone = new Milestone();
-        this.milestone.deadline = this.task.deadline;
-        this.milestone.title=this.task.title;
-        this.milestones.push(this.milestone);
-      }
-      this.data.project.milestones = this.milestones;
-      this.tasks.push(this.task);
-      this.data.project.tasks = this.tasks;
+      this.data.project.tasks.push(this.task);
     });
   }
 
@@ -151,9 +170,8 @@ milestone: Milestone
 })
 
 export class AddTask {
-
-  users: User[] = [];
-  user: User;
+  user: { name: string, email: string};
+  userArray: Array<{ name: string, email: string}> = [];
 
   constructor(
     public dialog: MatDialog,
@@ -165,17 +183,19 @@ export class AddTask {
     this.dialogRef.close();
   }
 
-  toggleEditable(event) {
+  toggleEditable(event): void {
       if ( event.checked ) {
            this.data.task.milestone = true;
       } else {
         this.data.task.milestone = false;
       }
-      console.log(this.data.task.milestone);
   }
 
   addUser(): void {
-    this.user = new User();
+    this.user = {
+      name: '',
+      email: ''
+    };
     let dialogRef = this.dialog.open(AddUser, {
       data: { user: this.user }
     });
@@ -187,15 +207,16 @@ export class AddTask {
       //   .then(u => {
       //     this.users.push(u);
       //   });
-      this.users.push(this.user);
-      this.data.task.user = this.users;
-      console.log('users: '+ JSON.stringify(this.data.task));
+      this.userArray.push(this.user);
+      this.data.task.user = this.userArray;
+      console.log('users: '+ JSON.stringify(this.data.task.user));
     });
   }
 
-  userdetails(user: User) {
+  userdetails(user: Employee) {
     if (!user) { return; }
     this.data.task.user = this.data.task.user.filter(u => u !== user);
+    this.userArray = this.userArray.filter(u => u !== user);
     this.user = user;
 
     let dialogRef = this.dialog.open(AddUser, {
@@ -205,8 +226,8 @@ export class AddTask {
     dialogRef.afterClosed().subscribe(result => {
       this.user = result;
       if (!this.user) { return; }
-      this.users.push(this.user);
-      this.data.task.user = this.users;
+      this.userArray.push(this.user);
+      this.data.task.user = this.userArray;
       console.log('users: '+ JSON.stringify(this.data.task));
     });
   }
