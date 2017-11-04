@@ -13,7 +13,7 @@
     </mat-tab>
     <mat-tab label="Aufgaben">
       <mat-list>
-        <mat-list-item *ngFor="let task of project.tasks">
+        <mat-list-item *ngFor="let task of tasks">
           <div class="col-sm-4">
             {{task.title}}
           </div>
@@ -32,16 +32,14 @@
     </mat-tab>
     <mat-tab label="Team">
       <mat-list>
-        <div *ngFor="let task of project.tasks">
-          <mat-list-item *ngFor="let user of task.user">
+          <mat-list-item *ngFor="let employee of employees">
             <div class="col-sm-4">
-              {{user.name}}
+              {{employee.name}}
             </div>
             <div class="col-sm-6">
-              {{user.email}}
+              {{employee.email}}
             </div>
           </mat-list-item>
-        </div>
       </mat-list>
       <!-- <div class="form-group col-xs-12">
         <label for="newUser">neuer User</label>
@@ -51,7 +49,7 @@
     <mat-tab label="Termine">
       <div class="col-sm-12">
         <mat-list>
-          <mat-list-item *ngFor="let task of project.tasks">
+          <mat-list-item *ngFor="let task of tasks">
             <div class="col-sm-4"
             [class.milestone]="task.milestone">
               {{task.deadline | date:'dd. MMMM y'}}

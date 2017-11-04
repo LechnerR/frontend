@@ -2,6 +2,7 @@
   <h3 mat-dialog-title>Teammitglied anlegen</h3>
   <div mat-dialog-content>
     <form (ngSubmit)="onNoClick()" #addUser="ngForm">
+      <div>  <input type="hidden" id="id" [(ngModel)]="data.user.id" name="id"></div>
       <div class="form-group">
         <label for="name">Name: </label>
         <input type="text" class="form-control" id="name" placeholder="Name" required [(ngModel)]="data.user.name" name="name" #name="ngModel"/>

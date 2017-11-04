@@ -1,11 +1,11 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Project } from '../shared/project';
-import { Project_task } from '../shared/project_task';
+import {ProjectTask} from '../shared/ProjectTask';
 import { Employee } from '../shared/employee';
-import { Project_task_assignment } from '../shared/project_task_assignment';
-import { Task_employee_assignment } from '../shared/task_employee_assignment';
-import { ProjectService } from '../project.service';
+import { TaskEmployeeAssignment } from '../shared/TaskEmployeeAssignment';
+import { ProjectService } from '../project/project.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import {ProjectTaskCombination} from '../shared/ProjectTaskCombination';
 
 @Component({
   selector: 'dashboard',
@@ -16,10 +16,11 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 export class DashboardComponent implements OnInit {
   projects: Project[] = [];
   project: Project;
-  tasks: Project_task[] = [];
-  task: Project_task;
+  tasks: ProjectTask[] = [];
+  task: ProjectTask;
   users: Employee[] = [];
   user: Employee;
+  projectTaskCombination: ProjectTaskCombination[] = [];
   p: { start_date: Date, end_date: Date, description: string, title: string, notice: string };
 
   constructor (
@@ -27,14 +28,21 @@ export class DashboardComponent implements OnInit {
     public dialog: MatDialog
   ) { }
 
-
   ngOnInit(): void {
-    this.projectService.getProjects().then(projects => this.projects = projects);
+    this.projectService.getProjects().then(projects => {
+      this.projects = projects;
+      if (this.projects != null) {
+        for (const proj of this.projects) {
+          this.projectService.getTasks(proj.id)
+            .then(tasks => this.projectTaskCombination.push(new ProjectTaskCombination(proj, tasks)));
+        }
+      }
+    });
   }
 
   delete(project: Project): void {
   this.projectService
-      .delete(project.id)
+      .deleteProject(project.id)
       .then(() => {
         this.projects = this.projects.filter(p => p !== project);
       });
@@ -48,7 +56,7 @@ export class DashboardComponent implements OnInit {
       description: '',
       notice: ''
     };
-    let dialogRef = this.dialog.open(AddProjectDialog, {
+    const dialogRef = this.dialog.open(AddProjectDialog, {
       data: { project: this.p }
     });
 
@@ -56,20 +64,22 @@ export class DashboardComponent implements OnInit {
       this.p = result;
       if (!this.p) { return; }
 
-        this.projectService.createProject(new Project(this.p['start_date'], this.p['end_date'], this.p['title'], this.p['description'], this.p['notice']))
+        this.projectService.createProject(
+          new Project(-1, this.p['start_date'], this.p['end_date'], this.p['title'], this.p['description'], this.p['notice']))
           .then(project => {
-
+            this.projects.push(project);
             if (this.p['tasks']) {
-              for (let t of this.p['tasks']) {
-                this.projectService.createTask(new Project_task(t['title'], t['description'], t['notice'], t['deadline'], t['milestone']))
+              for (const t of this.p['tasks']) {
+                this.projectService.createTask(
+                  new ProjectTask(-1, t['title'], t['description'], t['notice'], t['deadline'], t['milestone'], project.id))
                   .then(task => {
-                    this.projectService.createProjectTaskAssignment(new Project_task_assignment(project.id,task.id));
                     if (t['user']) {
-                      for (let u of t['user']) {
-                        this.projectService.createUser(new Employee(u['name'], u['email']))
+                      for (const u of t['user']) {
+                        this.projectService.createUser(new Employee(-1, u['name'], u['email']))
                           .then(user => {
                             this.users.push(user);
-                            this.projectService.createTaskEmployeeAssignment(new Task_employee_assignment(task.id, user.id));
+                            const assignment = new TaskEmployeeAssignment(-1, task.id, user.id);
+                            this.projectService.createTaskEmployeeAssignment(assignment);
                           });
                       }
                     }
@@ -77,26 +87,52 @@ export class DashboardComponent implements OnInit {
               }
             }
           });
-      // console.log('test: ' + this.p['title']);
-      // console.log('tasks of project: ' + JSON.stringify(this.p['tasks']));
-      // if (this.p['tasks']) {
-      //   for (let e of this.p['tasks']) {
-      //     console.log('user of tasks: ' + JSON.stringify(e['user']));
-      //   }
-      // }
-      // console.log('project: '+ JSON.stringify(this.p));
-      this.projectService.getProjects().then(projects => this.projects = projects);
     });
   }
 
-  updateProject(project: Project): void {
-    if(!project) { return; }
-    this.p = project;
-    let dialogRef = this.dialog.open(AddProjectDialog, {
+  updateProject(proj: Project): void {
+    if (!proj) { return; }
+    this.p = proj;
+    const dialogRef = this.dialog.open(AddProjectDialog, {
       data: { project: this.p }
     });
 
-    //nu ned fertig
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      this.p = result;
+      if (!this.p) { return; }
+      console.log()
+      this.projectService.updateProject(
+        new Project(this.p['id'], this.p['start_date'], this.p['end_date'], this.p['title'], this.p['description'], this.p['notice']))
+        .then(project => {
+          if (this.p['tasks']) {
+            for (const t of this.p['tasks']) {
+              this.projectService.updateTask(
+                new ProjectTask(t['id'], t['title'], t['description'], t['notice'], t['deadline'], t['milestone'], project.id))
+                .then(task => {
+                  if (t['user']) {
+                    for (const u of t['user']) {
+                      this.projectService.updateUser(new Employee(u['id'], u['name'], u['email']))
+                        .then(user => {
+                          // get all assignments and check if task, employee assignment is equal, if not create it
+                          this.projectService.getEmployeeAssignmentPerTask(task.id)
+                            .then(assignments => {
+                              for (const a of assignments) {
+                                if (a.employeeid !== user.id && a.taskid !== task.id) {
+                                  // new employee assigned CREATE it
+                                  const assign = new TaskEmployeeAssignment(-1, task.id, user.id);
+                                  this.projectService.createTaskEmployeeAssignment(assign);
+                                }
+                              }
+                            });
+                        });
+                    }
+                  }
+                });
+            }
+          }
+        });
+    });
   }
 
 }
@@ -107,8 +143,8 @@ export class DashboardComponent implements OnInit {
 })
 
 export class AddProjectDialog {
-task: { title: string, description: string, notice: string, deadline: Date, milestone: boolean };
-taskArray: Array<{title: string, description: string, notice: string, deadline: Date, milestone: boolean}> = [];
+task: { id: number, title: string, description: string, notice: string, deadline: Date, milestone: boolean };
+taskArray: Array<{id: number, title: string, description: string, notice: string, deadline: Date, milestone: boolean}> = [];
 
   constructor(
     private projectService: ProjectService,
@@ -119,13 +155,14 @@ taskArray: Array<{title: string, description: string, notice: string, deadline: 
 
   addTask(): void {
     this.task = {
+      id: null,
       title: '',
       description: '',
       notice: '',
       deadline: null,
       milestone: false
     };
-    let dialogRef = this.dialog.open(AddTask, {
+    const dialogRef = this.dialog.open(AddTask, {
       data: { task: this.task }
     });
 
@@ -147,7 +184,7 @@ taskArray: Array<{title: string, description: string, notice: string, deadline: 
     this.data.project.tasks = this.data.project.tasks.filter(t => t !== task);
     this.task = task;
 
-    let dialogRef = this.dialog.open(AddTask, {
+    const dialogRef = this.dialog.open(AddTask, {
       data: { task: this.task }
     });
 
@@ -170,8 +207,8 @@ taskArray: Array<{title: string, description: string, notice: string, deadline: 
 })
 
 export class AddTask {
-  user: { name: string, email: string};
-  userArray: Array<{ name: string, email: string}> = [];
+  user: { id: number, name: string, email: string};
+  userArray: Array<{ id: number, name: string, email: string}> = [];
 
   constructor(
     public dialog: MatDialog,
@@ -193,10 +230,11 @@ export class AddTask {
 
   addUser(): void {
     this.user = {
+      id: null,
       name: '',
       email: ''
     };
-    let dialogRef = this.dialog.open(AddUser, {
+    const dialogRef = this.dialog.open(AddUser, {
       data: { user: this.user }
     });
 
@@ -209,7 +247,7 @@ export class AddTask {
       //   });
       this.userArray.push(this.user);
       this.data.task.user = this.userArray;
-      console.log('users: '+ JSON.stringify(this.data.task.user));
+      console.log('users: ' + JSON.stringify(this.data.task.user));
     });
   }
 
@@ -219,7 +257,7 @@ export class AddTask {
     this.userArray = this.userArray.filter(u => u !== user);
     this.user = user;
 
-    let dialogRef = this.dialog.open(AddUser, {
+    const dialogRef = this.dialog.open(AddUser, {
       data: { user: this.user }
     });
 

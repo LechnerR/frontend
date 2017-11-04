@@ -49,7 +49,7 @@ export class ProjectSearchComponent implements OnInit {
   }
 
   gotoDetail(project: Project): void {
-    let link = ['/project', project.id];
+    const link = ['/project', project.id];
     this.router.navigate(link);
   }
 }

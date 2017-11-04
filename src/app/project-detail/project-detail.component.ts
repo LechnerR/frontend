@@ -8,7 +8,9 @@ import { Project } from '../shared/project';
 // import { Employee } from '../shared/employee';
 // import { Project_task_assignment } from '../shared/project_task_assignment';
 // import { Task_employee_assignment } from '../shared/task_employee_assignment';
-import { ProjectService } from '../project.service';
+import { ProjectService } from '../project/project.service';
+import {ProjectTask} from '../shared/ProjectTask';
+import {Employee} from '../shared/employee';
 
 @Component({
   selector: 'project-detail',
@@ -17,6 +19,8 @@ import { ProjectService } from '../project.service';
 })
 export class ProjectDetailComponent implements OnInit {
     project: Project;
+    tasks: ProjectTask[];
+    employees: Employee[];
 
     constructor (
       private projectService: ProjectService,
@@ -28,6 +32,16 @@ export class ProjectDetailComponent implements OnInit {
       this.route.paramMap
         .switchMap((params: ParamMap) => this.projectService.getProject(+params.get('id')))
         .subscribe(project => this.project = project);
+
+      this.route.paramMap
+        .switchMap((params: ParamMap) => this.projectService.getTasks(+params.get('id')))
+        .subscribe(tasks => this.tasks = tasks);
+
+      this.route.paramMap
+        .switchMap((params: ParamMap) => this.projectService.getEmployees(+params.get('id')))
+        .subscribe(employees => this.employees = employees);
+      // this.projectService.getTasks(this.project.id).then(tasks => this.tasks = tasks)
+      //   .catch(error => console.log('Task retrieve per Project hat nicht funktioniert'));
     }
 
 
@@ -40,4 +54,12 @@ export class ProjectDetailComponent implements OnInit {
     //       .then(() => this.goBack());
     // }
 
+  deleteTask(task: ProjectTask) {
+    this.projectService.deleteTask(task.id).then(deletedTask => {
+      const index: number = this.tasks.indexOf(deletedTask);
+      if (index !== -1) {
+        this.tasks.splice(index, 1);
+      }
+    });
+}
 }

@@ -6,21 +6,18 @@ import { HttpModule } from '@angular/http';
 
 import { AppRoutingModule } from './app-routing.module';
 
-// Imports for loading & configuring the in-memory web api
-import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService }  from './shared/in-memory-data.service';
-
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import 'hammerjs';
-import { MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatSidenavModule, MatListModule, MatDatepickerModule, MatAutocompleteModule, MatNativeDateModule, MatGridListModule, MatCheckboxModule, MatTabsModule, MatTooltipModule, MatDialogModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatMenuModule, MatToolbarModule, MatIconModule, MatSidenavModule } from '@angular/material';
+import { MatListModule, MatDatepickerModule, MatAutocompleteModule, MatNativeDateModule, MatGridListModule } from '@angular/material';
+import { MatCheckboxModule, MatTabsModule, MatTooltipModule, MatDialogModule } from '@angular/material';
 
 import { AppComponent } from './app/app.component';
 import { DashboardComponent, AddProjectDialog, AddTask, AddUser } from './dashboard/dashboard.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { TaskDetailComponent } from './task-detail/task-detail.component';
-// import { ProjectsComponent } from './project/projects.component';
-import { ProjectService } from './project.service';
+import { ProjectService } from './project/project.service';
 import { ProjectSearchComponent } from './project-search/project-search.component';
 
 @NgModule({
@@ -34,7 +31,6 @@ export class MyOwnCustomMaterialModule { }
     AppComponent,
     ProjectDetailComponent,
     TaskDetailComponent,
-    // ProjectsComponent,
     DashboardComponent,
     ProjectSearchComponent,
     AddProjectDialog,
@@ -53,7 +49,6 @@ export class MyOwnCustomMaterialModule { }
     MyOwnCustomMaterialModule,
     FlexLayoutModule,
     HttpModule,
-   // InMemoryWebApiModule.forRoot(InMemoryDataService),
     AppRoutingModule
   ],
   providers: [ProjectService],
