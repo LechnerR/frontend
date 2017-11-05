@@ -11,7 +11,7 @@ import { TaskEmployeeAssignment } from '../shared/TaskEmployeeAssignment';
 @Injectable()
 export class ProjectService {
 
-  private Url = 'http://localhost:53627/api/'; // URL to web api
+  private Url = 'http://localhost:53628/api/'; // URL to web api
   private headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(private http: Http) { }
@@ -28,7 +28,7 @@ export class ProjectService {
     // const url = `${this.projectsUrl}/${id}`;
     console.log('Jetzt kommt die Id');
     console.log(id);
-    const url = this.Url + '/Projects/' + id;
+    const url = this.Url + 'Projects/' + id;
     return this.http.get(url)
                .toPromise()
                .then(response => response.json() as Project)
@@ -105,7 +105,7 @@ export class ProjectService {
   }
 
   getTasks(id: number): Promise<ProjectTask[]> {
-    const url = this.Url + '/ProjectTasks/project=' + id;
+    const url = this.Url + 'ProjectTasks/project=' + id;
     return this.http.get(url)
       .toPromise()
       .then(response => response.json() as ProjectTask)
@@ -122,7 +122,7 @@ export class ProjectService {
   }
 
   getEmployees(id: number): Promise<Employee[]> {
-    const url = this.Url + '/Employees/project=' + id;
+    const url = this.Url + 'Employees/project=' + id;
     return this.http.get(url)
       .toPromise()
       .then(response => response.json() as Employee)
@@ -139,7 +139,7 @@ export class ProjectService {
   }
 
   getEmployeeAssignmentPerTask(id: number): Promise<TaskEmployeeAssignment[]> {
-    const url = this.Url + '/TaskEmployeeAssignments/task=' + id;
+    const url = this.Url + 'TaskEmployeeAssignments/task=' + id;
     return this.http.get(url)
       .toPromise()
       .then(response => response.json() as TaskEmployeeAssignment)

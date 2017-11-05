@@ -101,14 +101,14 @@ export class DashboardComponent implements OnInit {
       console.log(result);
       this.p = result;
       if (!this.p) { return; }
-      console.log()
       this.projectService.updateProject(
         new Project(this.p['id'], this.p['start_date'], this.p['end_date'], this.p['title'], this.p['description'], this.p['notice']))
         .then(project => {
           if (this.p['tasks']) {
             for (const t of this.p['tasks']) {
+              // debugger;
               this.projectService.updateTask(
-                new ProjectTask(t['id'], t['title'], t['description'], t['notice'], t['deadline'], t['milestone'], project.id))
+                new ProjectTask(t['id'], t['title'], t['description'], t['notice'], t['deadline'], t['milestone'], t['project.id']))
                 .then(task => {
                   if (t['user']) {
                     for (const u of t['user']) {
@@ -142,7 +142,7 @@ export class DashboardComponent implements OnInit {
   templateUrl: './add-project-dialog.html',
 })
 
-export class AddProjectDialog {
+export class AddProjectDialog implements OnInit {
 task: { id: number, title: string, description: string, notice: string, deadline: Date, milestone: boolean };
 taskArray: Array<{id: number, title: string, description: string, notice: string, deadline: Date, milestone: boolean}> = [];
 
@@ -152,6 +152,14 @@ taskArray: Array<{id: number, title: string, description: string, notice: string
     public dialogRef: MatDialogRef<AddProjectDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
+  ngOnInit(): void {
+    if (this.data.project.id != null) {
+      this.projectService.getTasks(this.data.project.id).then(tasks => {
+        this.data.project.tasks = tasks;
+        this.taskArray = tasks;
+      });
+    }
+  }
 
   addTask(): void {
     this.task = {
@@ -170,10 +178,6 @@ taskArray: Array<{id: number, title: string, description: string, notice: string
       this.task = result;
       if (!this.task) { return; }
 
-      // this.projectService.createTask(this.task)
-      //   .then(t => {
-      //     this.tasks.push(t);
-      //   });
       this.taskArray.push(this.task);
       this.data.project.tasks = this.taskArray;
     });
@@ -206,7 +210,7 @@ taskArray: Array<{id: number, title: string, description: string, notice: string
   templateUrl: './add-task.html'
 })
 
-export class AddTask {
+export class AddTask implements OnInit {
   user: { id: number, name: string, email: string};
   userArray: Array<{ id: number, name: string, email: string}> = [];
 
@@ -215,6 +219,15 @@ export class AddTask {
     private projectService: ProjectService,
     public dialogRef: MatDialogRef<AddTask>,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
+
+    ngOnInit(): void {
+      if (this.data.task.id != null) {
+        this.projectService.getEmployees(this.data.task.id).then(users => {
+          this.data.task.user = users;
+          this.userArray = users;
+        });
+      }
+    }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -241,10 +254,7 @@ export class AddTask {
     dialogRef.afterClosed().subscribe(result => {
       this.user = result;
       if (!this.user) { return; }
-      // this.projectService.createUser(this.user)
-      //   .then(u => {
-      //     this.users.push(u);
-      //   });
+
       this.userArray.push(this.user);
       this.data.task.user = this.userArray;
       console.log('users: ' + JSON.stringify(this.data.task.user));

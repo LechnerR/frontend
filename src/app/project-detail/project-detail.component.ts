@@ -4,10 +4,6 @@ import { Location } from '@angular/common';
 import 'rxjs/add/operator/switchMap';
 
 import { Project } from '../shared/project';
-// import { Project_task } from '../shared/project_task';
-// import { Employee } from '../shared/employee';
-// import { Project_task_assignment } from '../shared/project_task_assignment';
-// import { Task_employee_assignment } from '../shared/task_employee_assignment';
 import { ProjectService } from '../project/project.service';
 import {ProjectTask} from '../shared/ProjectTask';
 import {Employee} from '../shared/employee';
