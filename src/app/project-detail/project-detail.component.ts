@@ -27,11 +27,11 @@ export class ProjectDetailComponent implements OnInit {
     ngOnInit(): void {
       this.route.paramMap
         .switchMap((params: ParamMap) => this.projectService.getProject(+params.get('id')))
-        .subscribe(project => this.project = project);
+        .subscribe(project => {this.project = project});
 
       this.route.paramMap
         .switchMap((params: ParamMap) => this.projectService.getTasks(+params.get('id')))
-        .subscribe(tasks => this.tasks = tasks);
+        .subscribe(tasks => {this.tasks = tasks; this.tasks.sort((d1,d2) => d1['deadline'] < d2['deadline'] ? -1: d1['deadline'] > d2['deadline'] ? 1 : 0);});
 
       this.route.paramMap
         .switchMap((params: ParamMap) => this.projectService.getEmployees(+params.get('id')))
@@ -41,21 +41,16 @@ export class ProjectDetailComponent implements OnInit {
     }
 
 
-    // goBack(): void {
-    //   this.location.back();
-    // }
-    //
-    // save(): void {
-    //   this.projectService.update(this.project)
-    //       .then(() => this.goBack());
-    // }
-
   deleteTask(task: ProjectTask) {
     this.projectService.deleteTask(task.id).then(deletedTask => {
-      const index: number = this.tasks.indexOf(deletedTask);
-      if (index !== -1) {
-        this.tasks.splice(index, 1);
-      }
+      this.tasks = this.tasks.filter(t => t !== task);
     });
-}
+  }
+
+  deleteEmployee(employee: Employee) {
+    this.projectService.deleteEmployee(employee.id).then(deletedEmployee => {
+      this.employees = this.employees.filter(e => e !== employee);
+    });
+  }
+
 }

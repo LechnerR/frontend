@@ -34,7 +34,9 @@ export class DashboardComponent implements OnInit {
       if (this.projects != null) {
         for (const proj of this.projects) {
           this.projectService.getTasks(proj.id)
-            .then(tasks => this.projectTaskCombination.push(new ProjectTaskCombination(proj, tasks)));
+            .then(tasks => {
+              this.projectTaskCombination.push(new ProjectTaskCombination(proj, tasks));
+          });
         }
       }
     });
@@ -94,7 +96,8 @@ export class DashboardComponent implements OnInit {
     if (!proj) { return; }
     this.p = proj;
     const dialogRef = this.dialog.open(AddProjectDialog, {
-      data: { project: this.p }
+      data: { project: this.p },
+      width: '500px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -105,8 +108,25 @@ export class DashboardComponent implements OnInit {
         new Project(this.p['id'], this.p['start_date'], this.p['end_date'], this.p['title'], this.p['description'], this.p['notice']))
         .then(project => {
           if (this.p['tasks']) {
+            debugger;
             for (const t of this.p['tasks']) {
-              // debugger;
+              // task doesn't exist
+              if(t['id'] == null) {
+                this.projectService.createTask(
+                  new ProjectTask(-1, t['title'], t['description'], t['notice'], t['deadline'], t['milestone'], project.id))
+                  .then(task => {
+                    if (t['user']) {
+                      for (const u of t['user']) {
+                        this.projectService.createUser(new Employee(-1, u['name'], u['email']))
+                          .then(user => {
+                            this.users.push(user);
+                            const assignment = new TaskEmployeeAssignment(-1, task.id, user.id);
+                            this.projectService.createTaskEmployeeAssignment(assignment);
+                          });
+                      }
+                    }
+                  });
+              }
               this.projectService.updateTask(
                 new ProjectTask(t['id'], t['title'], t['description'], t['notice'], t['deadline'], t['milestone'], t['project.id']))
                 .then(task => {
@@ -140,6 +160,7 @@ export class DashboardComponent implements OnInit {
 @Component({
   selector: 'add-project-dialog',
   templateUrl: './add-project-dialog.html',
+  styleUrls: ['./add-project-dialog.scss']
 })
 
 export class AddProjectDialog implements OnInit {
@@ -197,6 +218,7 @@ taskArray: Array<{id: number, title: string, description: string, notice: string
       if (!this.task) { return; }
 
       this.data.project.tasks.push(this.task);
+      console.log('Das ist Task: ' + this.task);
     });
   }
 
@@ -207,7 +229,8 @@ taskArray: Array<{id: number, title: string, description: string, notice: string
 
 @Component({
   selector: 'add-task',
-  templateUrl: './add-task.html'
+  templateUrl: './add-task.html',
+  styleUrls: ['./add-task.scss']
 })
 
 export class AddTask implements OnInit {
@@ -284,7 +307,8 @@ export class AddTask implements OnInit {
 
 @Component({
   selector: 'add-user',
-  templateUrl: './add-user.html'
+  templateUrl: './add-user.html',
+  styleUrls: ['./add-user.scss']
 })
 
 export class AddUser {

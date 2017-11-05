@@ -39,6 +39,9 @@
             <div class="col-sm-6">
               {{employee.email}}
             </div>
+            <div class="col-sm-2">
+              <i class="fa fa-times-circle delete" matTooltip="Teammitglied löschen" (click)="deleteEmployee(employee)"></i>
+            </div>
           </mat-list-item>
       </mat-list>
       <!-- <div class="form-group col-xs-12">
@@ -57,34 +60,9 @@
             <div class="col-sm-6" [class.milestone]="task.milestone">
               {{task.title}}
             </div>
-            <!-- <div class="col-sm-2" *ngIf="task.milestone">
-              <i class="fa fa-times-circle delete" matTooltip="Meilenstein löschen" (click)="deleteMilestone(task.deadline)"></i>
-            </div> -->
           </mat-list-item>
         </mat-list>
       </div>
-      <!-- <div class="form-group col-xs-12">
-        <mat-form-field>
-          <label for="newAppointment">neuer Meilenstein</label>
-          <input matInput [matDatepicker]="myDatepicker" id="newAppointment">
-          <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
-          <mat-datepicker #myDatepicker></mat-datepicker>
-          <i class="fa fa-plus-circle" matTooltip="neuen Meilenstein festlegen" (click)="addAppointment()"></i>
-        </mat-form-field>
-      </div> -->
     </mat-tab>
   </mat-tab-group>
 </div>
-
-
-
-   <!-- <div>
-     <label>id: </label>{{project.id}}
-   </div>
-   <div>
-     <label>title: </label>
-     <input [(ngModel)]="project.title" placeholder="title"/>
-   </div>
- </div>
- <button (click)="goBack()">Back</button>
-<button (click)="save()">Save</button> -->

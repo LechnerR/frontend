@@ -8,6 +8,7 @@ a:link {
   color: #3c3b3b;
   text-decoration: none;
   font-weight: bold;
+  font-size: 110%;
 }
 a:visited {
   color: #3c3b3b;
@@ -33,7 +34,23 @@ mat-list-item a {
   margin-top: 83px;
 }
 
+.details {
+  margin-left: 3px;
+}
+
 .delete {
-  margin: 15px;
   color: darkred;
+}
+
+.icons {
+  margin-left: 3px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 3px;
+}
+
+h4 {
+  font-weight: bold;
 }

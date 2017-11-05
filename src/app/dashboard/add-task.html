@@ -37,14 +37,15 @@
           <i id="user" name="user" class="fa fa-plus-circle" (click)="addUser()"></i>
         </div>
       </div>
-      <div class="col-sm-12">
+      <div class="col-sm-12 date">
         <mat-form-field>
           <label for="deadline">Deadline</label>
           <input matInput [matDatepicker]="myDatepicker" id="deadline" [(ngModel)]="data.task.deadline" name="deadline" required>
           <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
           <mat-datepicker #myDatepicker></mat-datepicker>
-
-          <mat-checkbox [(ngModel)]="data.task.milestone" (change)="toggleEditable($event)" name="milestone">als Meilenstein festlegen</mat-checkbox>
+          <div>
+            <mat-checkbox [(ngModel)]="data.task.milestone" (change)="toggleEditable($event)" name="milestone">als Meilenstein festlegen</mat-checkbox>
+          </div>
         </mat-form-field>
       </div>
 

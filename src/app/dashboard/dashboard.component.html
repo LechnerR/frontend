@@ -4,13 +4,11 @@
   <mat-grid-list cols="3" rowHeight="2:1" gutterSize="8px">
       <mat-grid-tile *ngFor="let project of projects" >
           {{project.title}}
-          <i class="fa fa-trash-o delete" aria-hidden="true" matTooltip="Projekt löschen" (click)="delete(project); $event.stopPropagation()"></i>
-          <i class="fa fa-pencil" aria-hidden="true" (click)="updateProject(project)" matTooltip="Projekt bearbeiten"></i>
-          <i class="fa fa-info-circle" aria-hidden="true" [routerLink]="['/project', project.id]" matTooltip="Details anzeigen"></i>
-
-        <!-- <div class="col-xs-12">
-          <i class="fa fa-trash-o delete" aria-hidden="true" matTooltip="Projekt löschen" (click)="delete(project); $event.stopPropagation()"></i>
-        </div> -->
+          <div class="icons">
+            <i class="fa fa-trash-o details delete" aria-hidden="true" matTooltip="Projekt löschen" (click)="delete(project); $event.stopPropagation()"></i>
+            <!-- <i class="fa fa-pencil details" aria-hidden="true" (click)="updateProject(project)" matTooltip="Projekt bearbeiten"></i> -->
+            <i class="fa fa-info-circle details" aria-hidden="true" [routerLink]="['/project', project.id]" matTooltip="Details anzeigen"></i>
+          </div>
       </mat-grid-tile>
   </mat-grid-list>
   <div class="form-group col-sm-8">
@@ -24,9 +22,15 @@
 <div class="col-sm-4 side-bar">
   <div class="col-sm-12">
     <h4>Anstehende Aufgaben</h4>
-    <mat-list>
-      <mat-list-item *ngFor="let project of projectTaskCombination">
+    <ul *ngFor="let project of projectTaskCombination">
+      <li  *ngIf="project.tasks?.length > 0">
         <ul>
+          <a [routerLink]="['/project', project.project.id]">{{project.project.title}}</a>
+          <li *ngFor="let task of project.tasks">
+            <span>{{task.title}}</span>
+          </li>
+        </ul>
+        <!-- <ul>
           <li *ngIf="project.tasks">
             <a [routerLink]="['/project', project.project.id]">{{project.project.title}}</a>
             <ul>
@@ -36,8 +40,8 @@
               </li>
             </ul>
           </li>
-        </ul>
-      </mat-list-item>
-    </mat-list>
+        </ul> -->
+      </li>
+    </ul>
   </div>
 </div>

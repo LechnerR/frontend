@@ -92,7 +92,7 @@ export class ProjectService {
   }
 
   deleteProject(id: number) {
-    const url = `${this.Url}/Projects/${id}`;
+    const url = `${this.Url}Projects/${id}`;
     return this.http.delete(url, { headers: this.headers })
             .toPromise()
             .then(response => response.json() as Project)
@@ -112,8 +112,19 @@ export class ProjectService {
       .catch(this.handleError);
   }
 
+  getProjectTask(id: number): Promise<ProjectTask> {
+    // const url = `${this.projectsUrl}/${id}`;
+    console.log('Jetzt kommt die Id vom Task');
+    console.log(id);
+    const url = this.Url + 'ProjectTasks/' + id;
+    return this.http.get(url)
+               .toPromise()
+               .then(response => response.json() as ProjectTask)
+               .catch(this.handleError);
+  }
+
   deleteTask(id: number) {
-    const url = `${this.Url}/ProjectTasks/${id}`;
+    const url = `${this.Url}ProjectTasks/${id}`;
     return this.http.delete(url, { headers: this.headers })
       .toPromise()
       .then(response => response.json() as ProjectTask)
@@ -130,7 +141,7 @@ export class ProjectService {
   }
 
   deleteEmployee(id: number) {
-    const url = `${this.Url}/Employees/${id}`;
+    const url = `${this.Url}Employees/${id}`;
     return this.http.delete(url, { headers: this.headers })
       .toPromise()
       .then(response => response.json() as Employee)
